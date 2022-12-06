@@ -3459,6 +3459,34 @@ PrefabInstance:
       propertyPath: textAsValue
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 446790454039395538, guid: 86e12576c57064043be5e3f3eac9f8b9, type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 446790454039395538, guid: 86e12576c57064043be5e3f3eac9f8b9, type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 446790454039395538, guid: 86e12576c57064043be5e3f3eac9f8b9, type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 770449794}
+    - target: {fileID: 446790454039395538, guid: 86e12576c57064043be5e3f3eac9f8b9, type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 446790454039395538, guid: 86e12576c57064043be5e3f3eac9f8b9, type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SendMessage
+      objectReference: {fileID: 0}
+    - target: {fileID: 446790454039395538, guid: 86e12576c57064043be5e3f3eac9f8b9, type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.Component, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 446790454039395538, guid: 86e12576c57064043be5e3f3eac9f8b9, type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86e12576c57064043be5e3f3eac9f8b9, type: 3}
 --- !u!224 &604664806 stripped
@@ -5519,7 +5547,7 @@ MonoBehaviour:
     m_Right: 16
     m_Top: 16
     m_Bottom: 16
-  m_ChildAlignment: 0
+  m_ChildAlignment: 1
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -9164,12 +9192,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: {fileID: 887733698}
-  commandPanelPrefab: {fileID: 7057942153219863387, guid: 3050cf5c3241f894bab7df5c56ef9db4, type: 3}
+  commandPanelPrefab: {fileID: 1497192123627331599, guid: 94cb2d558fc5d374382995b62cd8dc03, type: 3}
   toggleGroup: {fileID: 887733701}
+  currentCommandPanel: {fileID: 0}
   commandPanels: []
   OnIndexSelected:
     m_PersistentCalls:
       m_Calls: []
+  action: {fileID: 0}
   commands: []
 --- !u!114 &1703581969
 MonoBehaviour:

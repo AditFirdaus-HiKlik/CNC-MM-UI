@@ -34,8 +34,7 @@ public class ActionWindow : MonoBehaviour
     public void SelectActionIndex(int index)
     {
         actionIndex = index;
-        commandView.UpdatePanels(currentAction.commands);
-        SelectCommandIndex(currentAction.currentCommandIndex);
+        UpdateCommandView(currentAction);
     }
 
     public void SelectCommandIndex(int index)
@@ -44,16 +43,11 @@ public class ActionWindow : MonoBehaviour
         {
             commandIndex = index;
 
+            commandController.actionWindow.commandView.commandPanels[commandIndex]?.Select();
+
             ClampCommandIndex();
 
             currentAction.currentCommandIndex = commandIndex;
-
-            if (commandView.commandPanels.Length != 0)
-            {
-                commandView.commandPanels[commandIndex].refToggle.isOn = true;
-            }
-
-            commandController.UpdateCaretPosition();
         }
     }
 
@@ -62,9 +56,9 @@ public class ActionWindow : MonoBehaviour
         actionView.UpdatePanels(actions);
     }
 
-    public void UpdateCommandView(List<Command> commands)
+    public void UpdateCommandView(Action action)
     {
-        commandView.UpdatePanels(commands);
+        commandView.UpdatePanels(action);
     }
 
     public Action GetAction(int index)

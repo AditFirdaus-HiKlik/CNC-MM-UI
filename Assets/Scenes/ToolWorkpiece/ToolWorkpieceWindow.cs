@@ -18,10 +18,11 @@ public class ToolWorkpieceWindow : MonoBehaviour
     public int HeightMin = 50;
     public int HeightMax = 150;
 
-    [HideInInspector] public WorkpieceMaterial workspaceMaterial;
-    [HideInInspector] public int workspaceLength;
-    [HideInInspector] public int workspaceWidth;
-    [HideInInspector] public int workspaceHeight;
+    [Header("Workpiece Parameters")]
+    public WorkpieceMaterial workspaceMaterial;
+    public int workspaceLength;
+    public int workspaceWidth;
+    public int workspaceHeight;
 
     private void Start()
     {
@@ -50,6 +51,44 @@ public class ToolWorkpieceWindow : MonoBehaviour
     public void MoveHeight(int step)
     {
         workspaceHeight = Mathf.Clamp(workspaceHeight + step, HeightMin, HeightMax);
+    }
+
+    public void SetMaterial(string value)
+    {
+        int numTypes = 2;
+        int tt = (int)workspaceMaterial;
+
+        int.TryParse(value, out tt);
+
+        tt = Mathf.Clamp(tt, 0, numTypes - 1);
+        workspaceMaterial = (WorkpieceMaterial)tt;
+
+        UpdateEditors();
+    }
+
+    public void SetLength(string value)
+    {
+        int.TryParse(value, out workspaceLength);
+
+        workspaceLength = Mathf.Clamp(workspaceLength, LengthMin, LengthMax);
+
+        UpdateEditors();
+    }
+    public void SetWidth(string value)
+    {
+        int.TryParse(value, out workspaceWidth);
+
+        workspaceWidth = Mathf.Clamp(workspaceWidth, WidthMin, WidthMax);
+
+        UpdateEditors();
+    }
+    public void SetHeight(string value)
+    {
+        int.TryParse(value, out workspaceHeight);
+
+        workspaceHeight = Mathf.Clamp(workspaceHeight, HeightMin, HeightMax);
+
+        UpdateEditors();
     }
 
     public void UpdateEditors()

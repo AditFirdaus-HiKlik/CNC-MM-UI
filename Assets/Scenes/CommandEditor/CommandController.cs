@@ -6,108 +6,103 @@ public class CommandController : MonoBehaviour
 {
     public ActionWindow actionWindow;
 
+    public CommandPanel currentCommandPanel => actionWindow.currentCommandPanel;
+
+    public Command currentCommand => currentCommandPanel.command;
+
     public string commandCode
     {
-        set
-        {
-            actionWindow.currentCommand.code = value;
-            ClampPointerIndex();
-        }
-        get
-        {
-            return actionWindow.currentCommand.code;
-        }
+        set => currentCommand.code = value;
+        get => currentCommand.code;
     }
 
-    int _pointerIndex;
     public int pointerIndex
     {
-        get
-        {
-            // Make sure pointerIndex is within bounds
-            ClampPointerIndex();
-            return _pointerIndex;
-        }
-        set
-        {
-            _pointerIndex = value;
-            ClampPointerIndex();
-            UpdateCaretPosition();
-        }
+        get => currentCommandPanel ? currentCommandPanel.caretPosition : 0;
+        set => currentCommandPanel.caretPosition = value;
     }
 
-    public void ClampPointerIndex()
-    {
-        if (_pointerIndex < 0) _pointerIndex = 0;
-        if (_pointerIndex >= commandCode.Length) _pointerIndex = commandCode.Length - 1;
-    }
-
-    public void UpdateCaretPosition()
-    {
-        ClampPointerIndex();
-        actionWindow.currentCommandPanel.SetCaretIndex(_pointerIndex);
-    }
+    public static int _pointerIndex;
 
     public void MovePointer(int offset)
     {
+        _pointerIndex += offset;
         pointerIndex += offset;
+        ClampPointerIndex();
     }
 
     public void MovePointerLeft() => MovePointer(-1);
+
     public void MovePointerRight() => MovePointer(1);
 
     public void MovePointerToStart()
     {
-        pointerIndex = 0;
+        currentCommandPanel.refCode.MoveTextStart(false);
     }
 
     public void MovePointerToEnd()
     {
-        pointerIndex = commandCode.Length - 1;
+        currentCommandPanel.refCode.MoveTextEnd(false);
     }
 
     public void MoveCommand(int offset)
     {
         actionWindow.SelectCommandIndex(actionWindow.commandIndex + offset);
-
     }
 
     public void MoveCommandUp() => MoveCommand(-1);
+
     public void MoveCommandDown() => MoveCommand(1);
 
     public void Insert(string input = "")
     {
-        if (commandCode.Length == 0) commandCode += input;
-        else commandCode = commandCode.Insert(pointerIndex + 1, input);
+        string code = commandCode;
+
+        _pointerIndex = pointerIndex;
 
         MovePointerRight();
+
+        if (code.Length == 0) code += input;
+        else code = code.Insert(pointerIndex, input);
+
+        currentCommandPanel.SetCode(code, pointerIndex);
+
+        Debug.Log(_pointerIndex);
+
+
     }
 
-    // Backspace
     public void Backspace()
     {
+        ClampPointerIndex();
+
         if (commandCode.Length != 0)
         {
             commandCode = commandCode.Remove(pointerIndex, 1);
-            MovePointerLeft();
         }
+
+        MovePointerLeft();
+        currentCommand.UpdateUI();
     }
 
-    // Delete command
+    public void ClampPointerIndex()
+    {
+        pointerIndex = Mathf.Clamp(pointerIndex, 0, currentCommand.code.Length);
+    }
+
     public void DeleteCommand()
     {
         if (actionWindow.commandIndex < actionWindow.currentAction.commands.Count - 1)
         {
             actionWindow.currentAction.commands.RemoveAt(actionWindow.commandIndex);
-            actionWindow.UpdateCommandView(actionWindow.currentAction.commands);
+            actionWindow.UpdateCommandView(actionWindow.currentAction);
         }
     }
 
-    // New Command
     public void CreateCommand()
     {
         actionWindow.currentAction.commands.Add(new Command());
-        actionWindow.UpdateCommandView(actionWindow.currentAction.commands);
+        actionWindow.UpdateCommandView(actionWindow.currentAction);
     }
 
     public void ExecuteAction()

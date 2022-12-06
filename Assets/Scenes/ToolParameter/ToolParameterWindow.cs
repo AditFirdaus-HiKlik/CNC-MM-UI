@@ -24,10 +24,10 @@ public class ToolParameterWindow : MonoBehaviour
     public int lengthMax;
 
     public ToolParameter current => _toolParameterData.toolParameters[toolIndex];
-    [HideInInspector] public ToolCutterType toolType;
-    [HideInInspector] public ToolCutterDesign toolDesign;
+    [HideInInspector] public ToolCutterType toolType { set => current.type = value; get => current.type; }
+    [HideInInspector] public ToolCutterDesign toolDesign { set => current.design = value; get => current.design; }
     [HideInInspector] public int toolDiameter { set => current.diameter = value; get => current.diameter; }
-    [HideInInspector] public int toolLength;
+    [HideInInspector] public int toolLength { set => current.length = value; get => current.length; }
 
     private void Start()
     {
@@ -81,6 +81,69 @@ public class ToolParameterWindow : MonoBehaviour
     public void MoveLength(int step)
     {
         toolLength = Mathf.Clamp(toolLength + step, lengthMin, lengthMax);
+    }
+
+    public void SetTool(string value)
+    {
+        int parsedValue = toolIndex;
+
+        int.TryParse(value, out parsedValue);
+
+        if (parsedValue != toolIndex)
+        {
+            toolIndex = Mathf.Clamp(toolIndex, 0, _toolParameterData.toolParameters.Count - 1);
+            Load();
+        }
+
+        UpdateEditors();
+    }
+
+    public void SetType(string value)
+    {
+        int numTypes = 2;
+        int tt = (int)toolType;
+
+        int.TryParse(value, out tt);
+
+        tt = Mathf.Clamp(tt, 0, numTypes - 1);
+        toolType = (ToolCutterType)tt;
+
+        UpdateEditors();
+    }
+
+    public void SetDesign(string value)
+    {
+        int numTypes = 2;
+        int td = (int)toolDesign;
+
+        int.TryParse(value, out td);
+
+        td = Mathf.Clamp(td, 0, numTypes - 1);
+        toolDesign = (ToolCutterDesign)td;
+
+        UpdateEditors();
+    }
+
+    public void SetDiameter(string value)
+    {
+        int parsedValue = toolDiameter;
+
+        int.TryParse(value, out parsedValue);
+
+        toolDiameter = Mathf.Clamp(parsedValue, diameterMin, diameterMax);
+
+        UpdateEditors();
+    }
+
+    public void SetLength(string value)
+    {
+        int parsedValue = toolLength;
+
+        int.TryParse(value, out parsedValue);
+
+        toolLength = Mathf.Clamp(parsedValue, lengthMin, lengthMax);
+
+        UpdateEditors();
     }
 
     public void UpdateEditors()
